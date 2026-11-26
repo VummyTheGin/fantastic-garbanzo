@@ -1,24 +1,6 @@
 #pragma once
 #include "tabulas.h"
 
-/*
-
-	procedure INVCIPHER(in, Nr, w)
-		2: state ← in . See Sec. 3.4
-		3: state ← ADDROUNDKEY(state, w[4 ∗ Nr..4 ∗ Nr + 3]) . See Sec. 5.1.4
-		4: for round from Nr − 1 downto 1 do
-			5: state ← invShiftRows(state) . See Sec. 5.3.1			😃
-			6: state ← invSubBytes(state) . See Sec. 5.3.2			😃
-			7: state ← ADDROUNDKEY(state, w[4 ∗ round..4 ∗ round + 3]) 
-			8: state ← invMixColumns(state) . See Sec. 5.3.3 😃
-		9: end for
-		10: state ← invShiftRows(state)
-		11: state ← invSubBytes(state)
-		12: state ← ADDROUNDKEY(state, w[0..3])
-	13: return state
-
-
-*/
 const uint8_t invReferenceMATRICA[4][4] = {
         {0x0e, 0x0b, 0x0d, 0x09},
         {0x09, 0x0e, 0x0b, 0x0d},

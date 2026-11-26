@@ -10,15 +10,15 @@ const uint8_t referenceMATRICA[4][4]{
      { 0x03,0x01,0x01,0x02 } };
 
 void g_func(uint8_t w3[4], int* ptr_round) {
-    uint8_t g_temp[4] = { w3[1], w3[2], w3[3], w3[0] }; // nobidits pa kreisi
+    uint8_t g_temp[4] = { w3[1], w3[2], w3[3], w3[0] }; // nobidits pa kreisi  RotWord X1
 
-    // ( RotWord X1)
+
 
     for (int i = 0; i < 4; i++)
     {
-        g_temp[i] = sbox[g_temp[i]];
+        g_temp[i] = sbox[g_temp[i]];// SubWord Y1
     }
-    // ( SubWord Y1)
+    
 
     g_temp[0] ^= RCON[*ptr_round]; //XOR ar r1
 
@@ -36,7 +36,7 @@ void keyExpansion(uint8_t key[4][4], uint8_t w[44][4]) {
         {
             w[i][j] = key[j][i];
         }
-    } // parkopet matricu
+    } // te nesanaca ar std::memcpy, jo w ir 44/4 bet key ir 4/4
 
     for (int i = 4; i < 44; i++)
     {
@@ -52,18 +52,6 @@ void keyExpansion(uint8_t key[4][4], uint8_t w[44][4]) {
         {
             w[i][j] = w[i - 4][j] ^ temp[j]; // XOR operacija
         }
-    }
-
-            //   26:12 AES III
-
-}
-
-void printState(uint8_t matrica[4][4]) {
-    for (int r = 0; r < 4; r++) {
-        for (int c = 0; c < 4; c++)
-            std::cout << std::hex << std::setw(2) << std::setfill('0')
-            << (int)matrica[r][c] << ' ';
-        std::cout << '\n';
     }
 }
 
@@ -86,7 +74,7 @@ void shiftRows(uint8_t matrica[4][4]) {
     for (int r = 1; r < 4;r++){
     for (int c = 0; c < 4; c++)
         {
-        matrica[r][c] = tempMatrica[r][(c+r)%4]; // ideja - atlikums ir nobide, paldies veretiy 😃, kods strada
+        matrica[r][c] = tempMatrica[r][(c+r)%4];
     }
  }
 
@@ -97,7 +85,6 @@ void mixColumns(uint8_t matrica[4][4]) {
 
     uint8_t rezultats[4][4];
   
-
     for (int r = 0;r < 4;r++)
     {
         for (int c = 0;c < 4;c++)
@@ -111,14 +98,7 @@ void mixColumns(uint8_t matrica[4][4]) {
 
         }
     }
-
-    /*for (int r = 0; r < 4; r++)  {   
-        for (int c = 0; c < 4; c++){
-            matrica[r][c] = rezultats[r][c];
-        }
-    }*/
     std::memcpy(matrica, rezultats, 16);
-
 }
 
 void addRoundKey(uint8_t matrica[4][4], uint8_t w[44][4],int round) {
@@ -132,27 +112,3 @@ void addRoundKey(uint8_t matrica[4][4], uint8_t w[44][4],int round) {
             matrica[3][j] ^= w[j + (round * 4)][3];
         }
 }
-
-    //inputToMatrix(matrica);
-     
-    /*keyExpansion(masterKey, w);
-    
-    addRoundKey(matrica, w, 0);
-    printState(matrica);    std::cout << '\n';
-    
-
-    for (int round = 1; round <= 9; round++) {
-        subBytes(matrica);
-        shiftRows(matrica);
-        mixColumns(matrica);
-        addRoundKey(matrica, w, round);  // 1-9 raunds
-    }
-
-
-    subBytes(matrica);                   // pedeja raunda nav mixColumns
-    shiftRows(matrica);
-    addRoundKey(matrica, w, 10);
-    std::cout << '\n';
-    printState(matrica);
-
-*/

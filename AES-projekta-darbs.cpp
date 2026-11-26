@@ -27,11 +27,20 @@ void inputToMatrix(uint8_t matrica[4][4]) {
     }
 }
 
-std::string matrixToString(const uint8_t matrica[4][4]) {
+void printState(uint8_t matrica[4][4]) {
+    for (int r = 0; r < 4; r++) {
+        for (int c = 0; c < 4; c++)
+            std::cout << std::hex << std::setw(2) << std::setfill('0')
+            << (int)matrica[r][c] << ' ';
+        std::cout << '\n';
+    }
+}
+
+std::string matrixToString( uint8_t matrica[4][4]) {
     std::string text;
     for (int c = 0; c < 4; ++c) {
         for (int r = 0; r < 4; ++r) {
-            uint8_t byteVal = matrica[r][c];
+            uint8_t byteVal = (int)matrica[r][c];
             text.push_back(byteVal);
         }
     }
@@ -39,10 +48,34 @@ std::string matrixToString(const uint8_t matrica[4][4]) {
     return text;
 }
 
+std::string matrixToHEXString( uint8_t matrica[4][4]) {
+    /*
+        nav gatavs vel
+      https://www.techiedelight.com/convert-an-integer-to-hex-string-in-cpp/
+    
+    */
+    std::string text;
+    for (int c = 0; c < 4; ++c) {
+        for (int r = 0; r < 4; ++r) {
+            //std::hex; std::setw(2); std::setfill('0');
+            uint8_t byteVal = matrica[r][c];
+            text.push_back(byteVal);
+        }
+    }
+    std::cout << "Matrica kā heksadecimālais teksts: " << text << std::endl;
+    return text;
+}
+
 int main()
 {
     uint8_t w[44][4] = {}; // inicalizet visus baitus
-    int izvele = 1;
+    int izvele = 2;
+    std::cout << "############################################" << std::endl;
+    std::cout << "################ AES - 128 #################" << std::endl;
+    std::cout << "############################################" << std::endl;
+    std::cout << "#1  - encrypt# 2 - decrypt# 3 - debug(both)#" << std::endl;
+    std::cout << "############################################" << std::endl;
+    std::cout << "Izvele: "; std::cin >> izvele;
     uint8_t masterKey[4][4] = { // Key = 2b 7e 15 16 28 ae d2 a6 ab f7 15 88 09 cf 4f 3c
     { 0x2b, 0x28, 0xab, 0x09 },
     { 0x7e, 0xae, 0xf7, 0xcf },
@@ -56,24 +89,24 @@ int main()
         { 0xf6, 0x30, 0x98, 0x07 },
         { 0xa8, 0x8d, 0xa2, 0x34 }
     };
+
+    /*
     inputToMatrix(matrica);
     std::cout << "Matrica parasta: \n";
     printState(matrica);
     keyExpansion(masterKey, w);
     addRoundKey(matrica, w, 0);
-    do{
+
     switch (izvele)
     {
     case 1:
     
-
         for (int round = 1; round <= 9; round++) {
             subBytes(matrica);
             shiftRows(matrica);
             mixColumns(matrica);
          addRoundKey(matrica, w, round);  // 1-9 raunds
         }
-
 
         subBytes(matrica);                   // pedeja raunda nav mixColumns
         shiftRows(matrica);
@@ -99,10 +132,9 @@ int main()
                 izvele = 10000;
         break;
     default:
-        std::cout << "nothing";
+        std::cout << "nothing" << std::endl;
         break;
-    }}while((izvele == 1 ) || ( izvele ==2 ));
-
-    matrixToString(matrica);
+    }
+*/
 	 return 0;
 }
